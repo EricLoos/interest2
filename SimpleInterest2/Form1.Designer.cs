@@ -108,7 +108,7 @@
             this.tStartDate.Name = "tStartDate";
             this.tStartDate.Size = new System.Drawing.Size(100, 20);
             this.tStartDate.TabIndex = 7;
-            this.tStartDate.Text = "1/31/17";
+            this.tStartDate.Text = "1/28/17";
             // 
             // tEndDate
             // 

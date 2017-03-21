@@ -26,26 +26,45 @@ namespace SimpleInterest2
         {
             double months = 0;
             double days = 0;
-
+            int errors = 0;
+            string err = "";
             DateTime startdate, enddate;
             if (DateTime.TryParse(tStartDate.Text, out startdate) && DateTime.TryParse(tEndDate.Text, out enddate))
             {
                 days = (enddate - startdate).TotalDays;
                 bool isSameDay = false;
                 if (startdate.Day == enddate.Day)
-                    isSameDay = true;
+                    isSameDay = true; // Both of our dates are the same day of the month.
                 if (IsLastDayOfMonth(startdate) && IsLastDayOfMonth(enddate))
-                {
+                {  // Both of our dates are at the end of a month.
                     isSameDay = true;
                 }
                 if (isSameDay)  // Then calculate based on even months only...
-                {
+                {  
                     months = enddate.Month - startdate.Month;
                     if (enddate.Year > startdate.Year)
                     {
                         months += (enddate.Year - startdate.Year) * 12;
                     }
                     days = 0;
+                    if (IsLastDayOfMonth(enddate))
+                    {
+                        if (months == 1)
+                        {
+                            days = DaysFromEndOfMonth(startdate);
+                        }
+                    }
+                }
+                else if (IsLastDayOfMonth(startdate) || IsLastDayOfMonth(enddate))
+                { // Is one of our dates at the end of a month?
+                    if (IsLastDayOfMonth(enddate))
+                    {
+                        
+                    }
+                    else
+                    {
+
+                    }
                 }
                 else
                 {  // Must get the number of days we are over even months.
@@ -63,19 +82,33 @@ namespace SimpleInterest2
                     days = (EvenStartDate - startdate).TotalDays;
                 }
             }
-            double amt = 0;
-            if (double.TryParse(tAmt.Text, out amt))
+            else
             {
+                err += "Bad start or end date. ";
+                errors++;
+            }
+            days = Math.Round(days);
+            months = Math.Round(months);
 
+            double amt = 0;
+            if (!double.TryParse(tAmt.Text, out amt))
+            {
+                err += "Bad amount. ";
+                errors++;
             }
             double interest = 0;
             if (double.TryParse(tInterest.Text, out interest))
             {
                 interest = interest / 100.0;
             }
+            else
+            {
+                err += "Bad interest entry. ";
+                errors++;
+            }
             double newAmt = amt * interest / 12.0 * months;
             newAmt += days * amt * interest / DaysPerYear;
-            tResult.Text = string.Format("{0} month(s); {1} day(s); Interest = {2:c}; Total = {3:c}", months, days, newAmt, amt + newAmt);
+            tResult.Text = string.Format("{0} month(s); {1} day(s); Interest = {2:c}; Total = {3:c}; ( {4} error(s): {5} ) ", months, days, newAmt, amt + newAmt, errors, err);
         }
         public double DaysPerYear = 365.0;
         public bool IsLastDayOfMonth(DateTime dt)
@@ -94,6 +127,17 @@ namespace SimpleInterest2
             }
 
             return dt;
+        }
+
+        public int DaysFromEndOfMonth(DateTime dt)
+        {
+            int r = 0;
+            while (!IsLastDayOfMonth(dt))
+            {
+                r++;
+                dt = dt.AddDays(1.0);
+            }
+            return r;
         }
     }
 }
