@@ -50,7 +50,7 @@ namespace SimpleInterest2
                     days = 0;
                     if (IsLastDayOfMonth(enddate))
                     {
-                        if (months == 1)
+                        if (true) // months == 1)
                         {
                             days = DaysFromEndOfMonth(startdate);
                         }
