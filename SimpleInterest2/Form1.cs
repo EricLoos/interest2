@@ -32,10 +32,11 @@ namespace SimpleInterest2
             if (DateTime.TryParse(tStartDate.Text, out startdate) && DateTime.TryParse(tEndDate.Text, out enddate))
             {
                 days = (enddate - startdate).TotalDays;
+                months = 0;
                 bool isSameDay = false;
                 if (startdate.Day == enddate.Day)
                     isSameDay = true; // Both of our dates are the same day of the month.
-                if (IsLastDayOfMonth(startdate) && IsLastDayOfMonth(enddate))
+                if (IsLastDayOfMonth(startdate) && ( IsLastDayOfMonth(enddate) || enddate.Day>startdate.Day ) )
                 {  // Both of our dates are at the end of a month.
                     isSameDay = true;
                 }
@@ -58,12 +59,27 @@ namespace SimpleInterest2
                 else if (IsLastDayOfMonth(startdate) || IsLastDayOfMonth(enddate))
                 { // Is one of our dates at the end of a month?
                     if (IsLastDayOfMonth(enddate))
-                    {
-                        
+                    {  // Only enddate is end of month
+                        days = DaysFromEndOfMonth(startdate);
+                        months = enddate.Month - startdate.Month;
+                        if (enddate.Year > startdate.Year)
+                        {
+                            months += (enddate.Year - startdate.Year) * 12;
+                        }
                     }
                     else
-                    {
-
+                    { // Only startdate is end of month
+                        DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
+                        days = (EvenStartDate - startdate).TotalDays;
+                        months = enddate.Month - startdate.Month;
+                        if (enddate.Year > startdate.Year)
+                        {
+                            months += (enddate.Year - startdate.Year) * 12;
+                        }
+                        if (startdate.Day > enddate.Day)
+                            months--;
+                        if (months < 0)
+                            months = 0;
                     }
                 }
                 else
