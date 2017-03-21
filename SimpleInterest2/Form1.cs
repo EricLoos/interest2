@@ -54,7 +54,8 @@ namespace SimpleInterest2
                     {
                         months += (enddate.Year - startdate.Year) * 12;
                     }
-                    months--;
+                    if (startdate.Day > enddate.Day)
+                        months--;
                     if (months < 0)
                         months = 0;
                     // So, find a new start date that is even with the end date's day.
