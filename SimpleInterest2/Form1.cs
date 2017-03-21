@@ -38,7 +38,7 @@ namespace SimpleInterest2
                 {
                     isSameDay = true;
                 }
-                if (isSameDay)
+                if (isSameDay)  // Then calculate based on even months only...
                 {
                     months = enddate.Month - startdate.Month;
                     if (enddate.Year > startdate.Year)
@@ -48,38 +48,18 @@ namespace SimpleInterest2
                     days = 0;
                 }
                 else
-                {
+                {  // Must get the number of days we are over even months.
                     months = enddate.Month - startdate.Month;
                     if (enddate.Year > startdate.Year)
                     {
                         months += (enddate.Year - startdate.Year) * 12;
                     }
-                    string sDate = string.Format("{0}/{1}/{2}", enddate.Month, startdate.Day, enddate.Year);
-                    DateTime dt;
-                    if (DateTime.TryParse(sDate, out dt))
-                    {
-                        if ((enddate - dt).TotalDays >= 0.5)
-                            days = Math.Abs((enddate - dt).TotalDays);
-                        else
-                        {
-                            //MessageBox.Show(string.Format("Date: {0:d};  End Date: {1:d}.", dt, enddate));
-                            days = (enddate - startdate).TotalDays;
-                            months = enddate.Month - startdate.Month;
-                            // CAUTION: Year?
-                            if (months <= 1)
-                                months = 0;
-                            else
-                            {
-                                months--;
-                                sDate = string.Format("{0}/{1}/{2}", startdate.Month+1, enddate.Day, enddate.Year);
-                                if (DateTime.TryParse(sDate, out dt))
-                                {
-                                    days = Math.Abs((startdate - dt).TotalDays);
-                                    //days = days + 1.0;
-                                }
-                            }
-                        }
-                    }
+                    months--;
+                    if (months < 0)
+                        months = 0;
+                    // So, find a new start date that is even with the end date's day.
+                    DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
+                    days = (EvenStartDate - startdate).TotalDays;
                 }
             }
             double amt = 0;
@@ -103,6 +83,16 @@ namespace SimpleInterest2
             if (dt.Month != dt.AddDays(1).Month)
                 result = true;
             return result;
+        }
+        public DateTime GetEvenStartDate(DateTime stdt,DateTime endt)
+        {
+            DateTime dt = stdt;
+            while(dt.Day!=endt.Day)
+            {
+                dt = dt.AddDays(1.0);
+            }
+
+            return dt;
         }
     }
 }
