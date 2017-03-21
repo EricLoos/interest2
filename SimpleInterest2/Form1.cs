@@ -62,7 +62,22 @@ namespace SimpleInterest2
                             days = Math.Abs((enddate - dt).TotalDays);
                         else
                         {
-                            MessageBox.Show(string.Format("Date: {0:d};  End Date: {1:d}.", dt, enddate));
+                            //MessageBox.Show(string.Format("Date: {0:d};  End Date: {1:d}.", dt, enddate));
+                            days = (enddate - startdate).TotalDays;
+                            months = enddate.Month - startdate.Month;
+                            // CAUTION: Year?
+                            if (months <= 1)
+                                months = 0;
+                            else
+                            {
+                                months--;
+                                sDate = string.Format("{0}/{1}/{2}", startdate.Month+1, enddate.Day, enddate.Year);
+                                if (DateTime.TryParse(sDate, out dt))
+                                {
+                                    days = Math.Abs((startdate - dt).TotalDays);
+                                    //days = days + 1.0;
+                                }
+                            }
                         }
                     }
                 }
