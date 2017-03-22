@@ -130,12 +130,16 @@ namespace SimpleInterest2
             tResult.Text = string.Format("{0} month(s); {1} day(s); Interest = {2:c}; Total = {3:c}; ( {4} error(s): {5} ) ", months, days, interestAmount, amt + interestAmount, errors, err);
         }
         public double DaysPerYear = 365.0;
+
+        // Calculate amount paid in interest over months and days.
         public double GetInterestAmount(double interest, double amount, double months, double days)
         {
-            double interestAmount = amount * interest / 12.0 * months;
+            double interestAmount = months * amount * interest / 12.0;
             interestAmount += days * amount * interest / DaysPerYear;
             return interestAmount;
         }
+
+        // Is this date the last day of a month?
         public bool IsLastDayOfMonth(DateTime dt)
         {
             bool result = false;
@@ -144,6 +148,7 @@ namespace SimpleInterest2
             return result;
         }
 
+        // Find next date that is same day of month as end date's day.
         public DateTime GetEvenStartDate(DateTime stdt,DateTime endt)
         {
             DateTime dt = stdt.Date;
@@ -155,6 +160,7 @@ namespace SimpleInterest2
             return dt;
         }
 
+        // Find number of days from end of the month.
         public int DaysFromEndOfMonth(DateTime dt)
         {
             int r = 0;
