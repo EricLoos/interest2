@@ -216,7 +216,8 @@ namespace SimpleInterest2
         private void calculatePMTToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PresentValue = 10000;
-            Payment = Math.Round( PMT(interest/12.0, payments, PresentValue), 2);
+            Payment = PMT(interest/12.0, payments, PresentValue);
+            Payment = Round(Payment);
             tResult.Text = string.Format("Payment = {0:c}", Payment);
         }
         int payments = 60;
@@ -229,6 +230,7 @@ namespace SimpleInterest2
             if (Payment < 0)
             {
                 double principal = PPMT(interest/12.0, 1, payments, PresentValue);
+                principal = Round(principal);
                 tResult.Text = string.Format("Payment = {0:c}; Interest = {1:c}, Principal = {2:c}; Balance = {3:c}", Payment, Payment - principal, principal, PresentValue + principal);
             }
             else
@@ -252,7 +254,7 @@ namespace SimpleInterest2
                     for (int i = 1; i <= payments; i++)
                     {
                         principal = PPMT(interest / 12.0, i, payments, PresentValue);
-                        principal = Math.Round(principal, 2);
+                        principal = Round(principal); // Math.Round(principal, 2, MidpointRounding.ToEven);
                         Balance += principal;
                         
                         ln = string.Format("{0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, Payment - principal, principal, Balance);
@@ -264,6 +266,21 @@ namespace SimpleInterest2
             {
                 tResult.Text = "You must do PMT first.";
             }
+        }
+
+        public bool RoundUp = false;
+        public double Round(double v)
+        {
+            if (RoundUp)
+            { // Round to the next penny.
+                v = Math.Round(v, 2);
+            }
+            else
+            { // Truncate.
+                int i = (int)(v * 100);
+                v = (double)i / 100.0;
+            }
+            return v;
         }
     }
 }
