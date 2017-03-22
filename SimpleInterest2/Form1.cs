@@ -172,10 +172,10 @@ namespace SimpleInterest2
         }
 
         // Find next date that is same day of month as end date's day.
-        public DateTime GetEvenStartDate(DateTime stdt,DateTime endt)
+        public DateTime GetEvenStartDate(DateTime stdt, DateTime endt)
         {
             DateTime dt = stdt.Date;
-            while(dt.Day!=endt.Day)
+            while (dt.Day != endt.Day)
             {
                 dt = dt.AddDays(1.0);
             }
@@ -216,18 +216,49 @@ namespace SimpleInterest2
         private void calculatePMTToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PresentValue = 10000;
-            Payment = PMT(0.01, 60, PresentValue);
+            Payment = Math.Round( PMT(interest/12.0, payments, PresentValue), 2);
             tResult.Text = string.Format("Payment = {0:c}", Payment);
         }
-        double Payment=0;
+        int payments = 60;
+        double interest = 0.12;
+        double Payment = 0;
         double PresentValue = 0;
         private void calculatePPMTToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //pmt = Math.Abs(pmt);
             if (Payment < 0)
             {
-                double principal = PPMT(0.01, 1, 60, PresentValue);
+                double principal = PPMT(interest/12.0, 1, payments, PresentValue);
                 tResult.Text = string.Format("Payment = {0:c}; Interest = {1:c}, Principal = {2:c}; Balance = {3:c}", Payment, Payment - principal, principal, PresentValue + principal);
+            }
+            else
+            {
+                tResult.Text = "You must do PMT first.";
+            }
+        }
+
+        private void amortizationScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DateTime StartDate;
+            DateTime.TryParse("3/22/17",out StartDate);
+            double principal;
+            string ln;
+            if (Payment < 0)
+            {
+                string path = @"\\nas4\ark2\_ab HealthcareFinanceDirect\TValue\AmortizationSchedule\sched.csv";
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
+                {
+                    double Balance = PresentValue;
+                    for (int i = 1; i <= payments; i++)
+                    {
+                        principal = PPMT(interest / 12.0, i, payments, PresentValue);
+                        principal = Math.Round(principal, 2);
+                        Balance += principal;
+                        
+                        ln = string.Format("{0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, Payment - principal, principal, Balance);
+                        sw.WriteLine(ln);
+                    }
+                }
             }
             else
             {

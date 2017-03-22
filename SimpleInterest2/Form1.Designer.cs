@@ -43,6 +43,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculatePMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculatePPMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.amortizationScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -140,30 +141,38 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem,
             this.calculatePMTToolStripMenuItem,
-            this.calculatePPMTToolStripMenuItem});
+            this.calculatePPMTToolStripMenuItem,
+            this.amortizationScheduleToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(159, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 114);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // calculatePMTToolStripMenuItem
             // 
             this.calculatePMTToolStripMenuItem.Name = "calculatePMTToolStripMenuItem";
-            this.calculatePMTToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.calculatePMTToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.calculatePMTToolStripMenuItem.Text = "Calculate PMT";
             this.calculatePMTToolStripMenuItem.Click += new System.EventHandler(this.calculatePMTToolStripMenuItem_Click);
             // 
             // calculatePPMTToolStripMenuItem
             // 
             this.calculatePPMTToolStripMenuItem.Name = "calculatePPMTToolStripMenuItem";
-            this.calculatePPMTToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.calculatePPMTToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.calculatePPMTToolStripMenuItem.Text = "Calculate PPMT";
             this.calculatePPMTToolStripMenuItem.Click += new System.EventHandler(this.calculatePPMTToolStripMenuItem_Click);
+            // 
+            // amortizationScheduleToolStripMenuItem
+            // 
+            this.amortizationScheduleToolStripMenuItem.Name = "amortizationScheduleToolStripMenuItem";
+            this.amortizationScheduleToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.amortizationScheduleToolStripMenuItem.Text = "Amortization Schedule";
+            this.amortizationScheduleToolStripMenuItem.Click += new System.EventHandler(this.amortizationScheduleToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -206,6 +215,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculatePMTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculatePPMTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem amortizationScheduleToolStripMenuItem;
     }
 }
 
