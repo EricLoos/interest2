@@ -122,11 +122,20 @@ namespace SimpleInterest2
                 err += "Bad interest entry. ";
                 errors++;
             }
+            /*
             double newAmt = amt * interest / 12.0 * months;
             newAmt += days * amt * interest / DaysPerYear;
-            tResult.Text = string.Format("{0} month(s); {1} day(s); Interest = {2:c}; Total = {3:c}; ( {4} error(s): {5} ) ", months, days, newAmt, amt + newAmt, errors, err);
+            */
+            double interestAmount = GetInterestAmount(interest, amt, months, days);
+            tResult.Text = string.Format("{0} month(s); {1} day(s); Interest = {2:c}; Total = {3:c}; ( {4} error(s): {5} ) ", months, days, interestAmount, amt + interestAmount, errors, err);
         }
         public double DaysPerYear = 365.0;
+        public double GetInterestAmount(double interest, double amount, double months, double days)
+        {
+            double interestAmount = amount * interest / 12.0 * months;
+            interestAmount += days * amount * interest / DaysPerYear;
+            return interestAmount;
+        }
         public bool IsLastDayOfMonth(DateTime dt)
         {
             bool result = false;
@@ -134,9 +143,10 @@ namespace SimpleInterest2
                 result = true;
             return result;
         }
+
         public DateTime GetEvenStartDate(DateTime stdt,DateTime endt)
         {
-            DateTime dt = stdt;
+            DateTime dt = stdt.Date;
             while(dt.Day!=endt.Day)
             {
                 dt = dt.AddDays(1.0);
@@ -148,6 +158,7 @@ namespace SimpleInterest2
         public int DaysFromEndOfMonth(DateTime dt)
         {
             int r = 0;
+            dt = dt.Date;
             while (!IsLastDayOfMonth(dt))
             {
                 r++;
