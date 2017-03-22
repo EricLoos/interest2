@@ -187,5 +187,17 @@ namespace SimpleInterest2
             }
             return r;
         }
+
+        public double PMT(double rate, double nper, double pv)
+        {/*
+            DevExpress.Spreadsheet.Functions.IFinancialFunctions fin;
+            return fin.Pmt(rate, per, pv);*/
+            return Microsoft.VisualBasic.Financial.Pmt(rate, nper, pv);
+        }
+
+        public double PPMT(double rate, double per, double nper, double pv)
+        {
+            return Microsoft.VisualBasic.Financial.PPmt(rate, per, nper, pv);
+        }
     }
 }
