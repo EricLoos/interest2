@@ -8,6 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+#region History
+/// <summary>
+/// 2017-03-22 el: Prepare to move some methods into a library.
+/// </summary>
+#endregion
+
+
 namespace SimpleInterest2
 {
     public partial class Form1 : Form
