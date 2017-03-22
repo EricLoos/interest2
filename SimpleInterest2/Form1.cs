@@ -22,68 +22,51 @@ namespace SimpleInterest2
             Calculate();
         }
 
-        private void Calculate()
+
+        public bool Calculate(DateTime startdate, DateTime enddate, out double days, out double months)
         {
-            double months = 0;
-            double days = 0;
-            int errors = 0;
-            string err = "";
-            DateTime startdate, enddate;
-            if (DateTime.TryParse(tStartDate.Text, out startdate) && DateTime.TryParse(tEndDate.Text, out enddate))
+            bool result = false;
+
+            days = (enddate - startdate).TotalDays;
+            months = 0;
+            bool isSameDay = false;
+            if (startdate.Day == enddate.Day)
+                isSameDay = true; // Both of our dates are the same day of the month.
+            if (IsLastDayOfMonth(startdate) && (IsLastDayOfMonth(enddate) || enddate.Day > startdate.Day))
+            {  // Both of our dates are at the end of a month.
+                isSameDay = true;
+            }
+            if (isSameDay)  // Then calculate based on even months only...
             {
-                days = (enddate - startdate).TotalDays;
-                months = 0;
-                bool isSameDay = false;
-                if (startdate.Day == enddate.Day)
-                    isSameDay = true; // Both of our dates are the same day of the month.
-                if (IsLastDayOfMonth(startdate) && ( IsLastDayOfMonth(enddate) || enddate.Day>startdate.Day ) )
-                {  // Both of our dates are at the end of a month.
-                    isSameDay = true;
+                months = enddate.Month - startdate.Month;
+                if (enddate.Year > startdate.Year)
+                {
+                    months += (enddate.Year - startdate.Year) * 12;
                 }
-                if (isSameDay)  // Then calculate based on even months only...
-                {  
+                days = 0;
+                if (IsLastDayOfMonth(enddate))
+                {
+                    if (true) // months == 1)
+                    {
+                        days = DaysFromEndOfMonth(startdate);
+                    }
+                }
+            }
+            else if (IsLastDayOfMonth(startdate) || IsLastDayOfMonth(enddate))
+            { // Is one of our dates at the end of a month?
+                if (IsLastDayOfMonth(enddate))
+                {  // Only enddate is end of month
+                    days = DaysFromEndOfMonth(startdate);
                     months = enddate.Month - startdate.Month;
                     if (enddate.Year > startdate.Year)
                     {
                         months += (enddate.Year - startdate.Year) * 12;
                     }
-                    days = 0;
-                    if (IsLastDayOfMonth(enddate))
-                    {
-                        if (true) // months == 1)
-                        {
-                            days = DaysFromEndOfMonth(startdate);
-                        }
-                    }
-                }
-                else if (IsLastDayOfMonth(startdate) || IsLastDayOfMonth(enddate))
-                { // Is one of our dates at the end of a month?
-                    if (IsLastDayOfMonth(enddate))
-                    {  // Only enddate is end of month
-                        days = DaysFromEndOfMonth(startdate);
-                        months = enddate.Month - startdate.Month;
-                        if (enddate.Year > startdate.Year)
-                        {
-                            months += (enddate.Year - startdate.Year) * 12;
-                        }
-                    }
-                    else
-                    { // Only startdate is end of month
-                        DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
-                        days = (EvenStartDate - startdate).TotalDays;
-                        months = enddate.Month - startdate.Month;
-                        if (enddate.Year > startdate.Year)
-                        {
-                            months += (enddate.Year - startdate.Year) * 12;
-                        }
-                        if (startdate.Day > enddate.Day)
-                            months--;
-                        if (months < 0)
-                            months = 0;
-                    }
                 }
                 else
-                {  // Must get the number of days we are over even months.
+                { // Only startdate is end of month
+                    DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
+                    days = (EvenStartDate - startdate).TotalDays;
                     months = enddate.Month - startdate.Month;
                     if (enddate.Year > startdate.Year)
                     {
@@ -93,9 +76,40 @@ namespace SimpleInterest2
                         months--;
                     if (months < 0)
                         months = 0;
-                    // So, find a new start date that is even with the end date's day.
-                    DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
-                    days = (EvenStartDate - startdate).TotalDays;
+                }
+            }
+            else
+            {  // Must get the number of days we are over even months.
+                months = enddate.Month - startdate.Month;
+                if (enddate.Year > startdate.Year)
+                {
+                    months += (enddate.Year - startdate.Year) * 12;
+                }
+                if (startdate.Day > enddate.Day)
+                    months--;
+                if (months < 0)
+                    months = 0;
+                // So, find a new start date that is even with the end date's day.
+                DateTime EvenStartDate = GetEvenStartDate(startdate, enddate);
+                days = (EvenStartDate - startdate).TotalDays;
+            }
+            result = days > 0.0 || months > 0.0;
+            return result;
+        }
+
+
+        private void Calculate()
+        {
+            double months = 0;
+            double days = 0;
+            int errors = 0;
+            string err = "";
+            DateTime startdate, enddate;
+            if (DateTime.TryParse(tStartDate.Text, out startdate) && DateTime.TryParse(tEndDate.Text, out enddate))
+            {
+                if (Calculate(startdate, enddate, out days, out months))
+                {
+
                 }
             }
             else
