@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -38,6 +39,11 @@
             this.tStartDate = new System.Windows.Forms.TextBox();
             this.tEndDate = new System.Windows.Forms.TextBox();
             this.tResult = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculatePMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculatePPMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -129,11 +135,42 @@
             this.tResult.Size = new System.Drawing.Size(434, 67);
             this.tResult.TabIndex = 9;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.closeToolStripMenuItem,
+            this.calculatePMTToolStripMenuItem,
+            this.calculatePPMTToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(159, 92);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // calculatePMTToolStripMenuItem
+            // 
+            this.calculatePMTToolStripMenuItem.Name = "calculatePMTToolStripMenuItem";
+            this.calculatePMTToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.calculatePMTToolStripMenuItem.Text = "Calculate PMT";
+            this.calculatePMTToolStripMenuItem.Click += new System.EventHandler(this.calculatePMTToolStripMenuItem_Click);
+            // 
+            // calculatePPMTToolStripMenuItem
+            // 
+            this.calculatePPMTToolStripMenuItem.Name = "calculatePPMTToolStripMenuItem";
+            this.calculatePPMTToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.calculatePPMTToolStripMenuItem.Text = "Calculate PPMT";
+            this.calculatePPMTToolStripMenuItem.Click += new System.EventHandler(this.calculatePPMTToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 261);
+            this.ContextMenuStrip = this.contextMenuStrip1;
             this.Controls.Add(this.tResult);
             this.Controls.Add(this.tEndDate);
             this.Controls.Add(this.tStartDate);
@@ -147,6 +184,7 @@
             this.MinimumSize = new System.Drawing.Size(450, 300);
             this.Name = "Form1";
             this.Text = "Simple Interest";
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,6 +202,10 @@
         private System.Windows.Forms.TextBox tStartDate;
         private System.Windows.Forms.TextBox tEndDate;
         private System.Windows.Forms.Label tResult;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculatePMTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculatePPMTToolStripMenuItem;
     }
 }
 

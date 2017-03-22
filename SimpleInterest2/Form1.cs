@@ -207,5 +207,32 @@ namespace SimpleInterest2
         {
             return Microsoft.VisualBasic.Financial.PPmt(rate, per, nper, pv);
         }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void calculatePMTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pv = 10000;
+            pmt = PMT(0.01, 60, pv);
+            tResult.Text = string.Format("Payment = {0:c}", pmt);
+        }
+        double pmt=0;
+        double pv = 0;
+        private void calculatePPMTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //pmt = Math.Abs(pmt);
+            if (pmt < 0)
+            {
+                double principal = PPMT(0.01, 1, 60, pv);
+                tResult.Text = string.Format("Payment = {0:c}; Interest = {1:c}, Principal = {2:c}; Balance = {3:c}", pmt, pmt - principal, principal, pv + principal);
+            }
+            else
+            {
+                tResult.Text = "You must do PMT first.";
+            }
+        }
     }
 }
