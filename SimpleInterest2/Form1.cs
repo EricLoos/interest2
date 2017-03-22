@@ -22,7 +22,7 @@ namespace SimpleInterest2
             Calculate();
         }
 
-
+        // Library calculate months and days method
         public bool Calculate(DateTime startdate, DateTime enddate, out double days, out double months)
         {
             bool result = false;
@@ -97,7 +97,7 @@ namespace SimpleInterest2
             return result;
         }
 
-
+        // Main form calculate method.
         private void Calculate()
         {
             double months = 0;
@@ -107,9 +107,10 @@ namespace SimpleInterest2
             DateTime startdate, enddate;
             if (DateTime.TryParse(tStartDate.Text, out startdate) && DateTime.TryParse(tEndDate.Text, out enddate))
             {
-                if (Calculate(startdate, enddate, out days, out months))
+                if (!Calculate(startdate, enddate, out days, out months))
                 {
-
+                    err += "Unable to calculate days or months. ";
+                    errors++;
                 }
             }
             else
@@ -145,7 +146,7 @@ namespace SimpleInterest2
         }
         public double DaysPerYear = 365.0;
 
-        // Calculate amount paid in interest over months and days.
+        // Calculate amount paid in interest over months and days. Will be library method. Call Calculate() to get months and days first.
         public double GetInterestAmount(double interest, double amount, double months, double days)
         {
             double interestAmount = months * amount * interest / 12.0;
