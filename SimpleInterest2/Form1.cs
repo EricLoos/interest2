@@ -196,11 +196,23 @@ namespace SimpleInterest2
             return r;
         }
 
-        public double PMT(double rate, double nper, double pv)
-        {/*
+        public double PMT(double MonthlyInterestRate, double nper, double pv)
+        {
+            double result = 0;
+            /*
             DevExpress.Spreadsheet.Functions.IFinancialFunctions fin;
             return fin.Pmt(rate, per, pv);*/
-            return Microsoft.VisualBasic.Financial.Pmt(rate, nper, pv);
+            result = Microsoft.VisualBasic.Financial.Pmt(MonthlyInterestRate, nper, pv);
+            if (WeCalcPmt)
+            {
+                result = Math.Pow(MonthlyInterestRate * (1 + MonthlyInterestRate), nper) / (Math.Pow(1 + MonthlyInterestRate, nper) - 1) * pv;
+
+                result = (MonthlyInterestRate + (MonthlyInterestRate / (Math.Pow((1 + MonthlyInterestRate), nper) - 1))) * pv;
+            }
+            result = Round(result);
+            if (result > 0)
+                result = result * -1;
+            return result;
         }
 
         public double PPMT(double rate, double per, double nper, double pv)
@@ -267,8 +279,8 @@ namespace SimpleInterest2
                 tResult.Text = "You must do PMT first.";
             }
         }
-
-        public bool RoundUp = false;
+        public bool WeCalcPmt = true;
+        public bool RoundUp = true;
         public double Round(double v)
         {
             if (RoundUp)
