@@ -232,6 +232,7 @@ namespace SimpleInterest2
             Payment = Round(Payment);
             tResult.Text = string.Format("Payment = {0:c}", Payment);
         }
+
         int payments = 60;
         double interest = 0.12;
         double Payment = 0;
@@ -264,19 +265,25 @@ namespace SimpleInterest2
                 {
                     double Balance = PresentValue;
                     for (int i = 1; i <= payments; i++)
-                    { /*
+                    { /* Do not use PPMT() since it is off by a few pennies.
                         principal = PPMT(interest / 12.0, i, payments, PresentValue);
                         principal = Round(principal); // Math.Round(principal, 2, MidpointRounding.ToEven);
                         */
-                        interestAmt = -Round(Balance * interest/12.0);
+                        interestAmt = -Round(Balance * interest / 12.0);
                         principal = Payment - interestAmt;
                         if (i == payments)
                         { // Pay-off
                             principal = -Round(Balance);
-                            interestAmt = Payment - principal;
+                            if (principal < Payment)
+                            {
+                                principal = -Balance;
+                                interestAmt = 0;
+                            }
+                            else
+                                interestAmt = Payment - principal;
                         }
                         Balance += principal;
-                        
+
                         ln = string.Format("{5}, {0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, interestAmt, principal, Balance, i);
                         sw.WriteLine(ln);
                     }
@@ -287,6 +294,7 @@ namespace SimpleInterest2
                 tResult.Text = "You must do PMT first.";
             }
         }
+
         public bool WeCalcPmt = true;
         public bool RoundUp = true;
         public double Round(double v)
