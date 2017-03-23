@@ -44,6 +44,7 @@
             this.calculatePMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculatePPMTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.amortizationScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -142,9 +143,10 @@
             this.closeToolStripMenuItem,
             this.calculatePMTToolStripMenuItem,
             this.calculatePPMTToolStripMenuItem,
-            this.amortizationScheduleToolStripMenuItem});
+            this.amortizationScheduleToolStripMenuItem,
+            this.randomDatesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(195, 136);
             // 
             // closeToolStripMenuItem
             // 
@@ -173,6 +175,13 @@
             this.amortizationScheduleToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.amortizationScheduleToolStripMenuItem.Text = "Amortization Schedule";
             this.amortizationScheduleToolStripMenuItem.Click += new System.EventHandler(this.amortizationScheduleToolStripMenuItem_Click);
+            // 
+            // randomDatesToolStripMenuItem
+            // 
+            this.randomDatesToolStripMenuItem.Name = "randomDatesToolStripMenuItem";
+            this.randomDatesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.randomDatesToolStripMenuItem.Text = "Random Dates";
+            this.randomDatesToolStripMenuItem.Click += new System.EventHandler(this.randomDatesToolStripMenuItem_Click_1);
             // 
             // Form1
             // 
@@ -216,6 +225,7 @@
         private System.Windows.Forms.ToolStripMenuItem calculatePMTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculatePPMTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem amortizationScheduleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomDatesToolStripMenuItem;
     }
 }
 

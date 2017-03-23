@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.IO;
 
 #region History
 /// <summary>
@@ -255,38 +255,46 @@ namespace SimpleInterest2
         private void amortizationScheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DateTime StartDate;
-            DateTime.TryParse("3/22/17",out StartDate);
+            DateTime.TryParse("3/22/17", out StartDate);
             double principal, interestAmt;
             string ln;
             if (Payment < 0)
             {
                 string path = @"\\nas4\ark2\_ab HealthcareFinanceDirect\TValue\AmortizationSchedule\sched.csv";
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
+                if (Directory.Exists(Path.GetDirectoryName(path)))
                 {
-                    double Balance = PresentValue;
-                    for (int i = 1; i <= payments; i++)
-                    { /* Do not use PPMT() since it is off by a few pennies.
+                    using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
+                    {
+                        double Balance = PresentValue;
+                        for (int i = 1; i <= payments; i++)
+                        { /* Do not use PPMT() since it is off by a few pennies.
                         principal = PPMT(interest / 12.0, i, payments, PresentValue);
                         principal = Round(principal); // Math.Round(principal, 2, MidpointRounding.ToEven);
                         */
-                        interestAmt = -Round(Balance * interest / 12.0);
-                        principal = Payment - interestAmt;
-                        if (i == payments)
-                        { // Pay-off
-                            principal = -Round(Balance);
-                            if (principal < Payment)
-                            {
-                                principal = -Balance;
-                                interestAmt = 0;
+                            interestAmt = -Round(Balance * interest / 12.0);
+                            principal = Payment - interestAmt;
+                            if (i == payments)
+                            { // Pay-off
+                                principal = -Round(Balance);
+                                if (principal < Payment)
+                                {
+                                    principal = -Balance;
+                                    interestAmt = 0;
+                                }
+                                else
+                                    interestAmt = Payment - principal;
                             }
-                            else
-                                interestAmt = Payment - principal;
-                        }
-                        Balance += principal;
+                            Balance += principal;
 
-                        ln = string.Format("{5}, {0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, interestAmt, principal, Balance, i);
-                        sw.WriteLine(ln);
+                            ln = string.Format("{5}, {0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, interestAmt, principal, Balance, i);
+                            sw.WriteLine(ln);
+                        }
                     }
+                    tResult.Text = string.Format("Completed {0} payment(s) to the CSV text file.", payments);
+                } 
+                else
+                {
+                    tResult.Text = "The NAS directory does not exist.";
                 }
             }
             else
@@ -294,6 +302,8 @@ namespace SimpleInterest2
                 tResult.Text = "You must do PMT first.";
             }
         }
+
+
 
         public bool WeCalcPmt = true;
         public bool RoundUp = true;
@@ -309,6 +319,45 @@ namespace SimpleInterest2
                 v = (double)i / 100.0;
             }
             return v;
+        }
+
+        private void randomDates(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            DateTime StartDate, EndDate;
+            double days, months;
+            double pv = 10000;
+            double intr = 0.12;
+            double InterestAmount;
+            string path = @"\\nas4\ark2\_ab HealthcareFinanceDirect\TValue\AmortizationSchedule\random.csv";
+            string ln;
+            int n = 100;
+            if (Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                using (System.IO.StreamWriter wr = new System.IO.StreamWriter(path))
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        StartDate = DateTime.Now.Date.AddDays(rnd.Next(100));
+                        EndDate = StartDate.AddDays(rnd.Next(365 * 2));
+                        Calculate(StartDate, EndDate, out days, out months);
+                        InterestAmount = GetInterestAmount(intr, pv, months, days);
+
+                        ln = string.Format("{0}, {1:M/d/yyyy}, {2:M/d/yyyy}, {3}, {4}, {5:0.00}, {6:0.00}, {7:0.00}", i + 1, StartDate, EndDate, (int)months, (int)days, pv, intr, InterestAmount);
+                        wr.WriteLine(ln);
+                    }
+                }
+                tResult.Text = string.Format("Completed {0} random dates to CSV text file.", n);
+            }
+            else
+            {
+                tResult.Text = "The NAS directory does not exist.";
+            }
+        }
+
+        private void randomDatesToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            randomDates(sender, e);
         }
     }
 }
