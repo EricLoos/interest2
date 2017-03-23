@@ -205,7 +205,7 @@ namespace SimpleInterest2
             result = Microsoft.VisualBasic.Financial.Pmt(MonthlyInterestRate, nper, pv);
             if (WeCalcPmt)
             {
-                result = Math.Pow(MonthlyInterestRate * (1 + MonthlyInterestRate), nper) / (Math.Pow(1 + MonthlyInterestRate, nper) - 1) * pv;
+                //result = Math.Pow(MonthlyInterestRate * (1 + MonthlyInterestRate), nper) / (Math.Pow(1 + MonthlyInterestRate, nper) - 1) * pv;
 
                 result = (MonthlyInterestRate + (MonthlyInterestRate / (Math.Pow((1 + MonthlyInterestRate), nper) - 1))) * pv;
             }
@@ -255,7 +255,7 @@ namespace SimpleInterest2
         {
             DateTime StartDate;
             DateTime.TryParse("3/22/17",out StartDate);
-            double principal;
+            double principal, interestAmt;
             string ln;
             if (Payment < 0)
             {
@@ -264,12 +264,20 @@ namespace SimpleInterest2
                 {
                     double Balance = PresentValue;
                     for (int i = 1; i <= payments; i++)
-                    {
+                    { /*
                         principal = PPMT(interest / 12.0, i, payments, PresentValue);
                         principal = Round(principal); // Math.Round(principal, 2, MidpointRounding.ToEven);
+                        */
+                        interestAmt = -Round(Balance * interest/12.0);
+                        principal = Payment - interestAmt;
+                        if (i == payments)
+                        { // Pay-off
+                            principal = -Round(Balance);
+                            interestAmt = Payment - principal;
+                        }
                         Balance += principal;
                         
-                        ln = string.Format("{0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, Payment - principal, principal, Balance);
+                        ln = string.Format("{5}, {0:MM/dd/yyyy}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}", StartDate.AddMonths(i), Payment, interestAmt, principal, Balance, i);
                         sw.WriteLine(ln);
                     }
                 }
