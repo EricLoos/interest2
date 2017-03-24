@@ -30,7 +30,15 @@ namespace SimpleInterest2
             Calculate();
         }
 
-        // Library calculate months and days method
+        
+        /// <summary>
+        /// Library calculate months and days method. The months and days result will allow you to next, accurately calculate interest $.
+        /// </summary>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <param name="days"></param>
+        /// <param name="months"></param>
+        /// <returns></returns>
         public bool Calculate(DateTime startdate, DateTime enddate, out double days, out double months)
         {
             bool result = false;
@@ -154,7 +162,15 @@ namespace SimpleInterest2
         }
         public double DaysPerYear = 365.0;
 
-        // Calculate amount paid in interest over months and days. Will be library method. Call Calculate() to get months and days first.
+        
+        /// <summary>
+        /// Calculate amount paid in interest over months and days. Will be library method. Call Calculate() to get months and days first.
+        /// </summary>
+        /// <param name="interest"></param>
+        /// <param name="amount"></param>
+        /// <param name="months"></param>
+        /// <param name="days"></param>
+        /// <returns></returns>
         public double GetInterestAmount(double interest, double amount, double months, double days)
         {
             double interestAmount = months * amount * interest / 12.0;
